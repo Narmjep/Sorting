@@ -1,2 +1,2 @@
 # Sorting
- Selected sorting demo using SDL2
+ Selection sorting demo using SDL2
