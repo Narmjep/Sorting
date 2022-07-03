@@ -2,13 +2,17 @@
 #define RENDERER_H
 
 #include <SDL.h>
+#include "ImguiWrapper.h"
 
 class Renderer
 {
 public:
+	SDL_Window* window;
+	SDL_Event event;
 	static SDL_Renderer* renderer;
 	static int windowWidth, windowHeight;
 	bool running;
+	imguiWrapper* gui;
 
 	Renderer();
 	~Renderer();
@@ -22,8 +26,7 @@ public:
 	void HandleEvents();
 
 private:
-	SDL_Window* window;
-	SDL_Event event;
+	
 };
 
 

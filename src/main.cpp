@@ -3,8 +3,7 @@
 #include <SDL_image.h>
 #include <time.h>
 #include <filesystem>
-
-//#define GET_CONSOLE
+#define GET_CONSOLE
 #ifdef GET_CONSOLE
 #include <windows.h>
 #endif
@@ -12,6 +11,8 @@
 #include "Renderer.h"
 #include "Block.h"
 #include "Sorter.h"
+#include "imguiWrapper.h"
+
 
 
 int main(int argc, char **argv){
@@ -21,9 +22,15 @@ int main(int argc, char **argv){
     FILE * f;
     freopen_s(&f , "CONOUT$" , "w" , stdout);
     freopen_s(&f , "CONOUT$" , "w" , stdin);
+    freopen_s(&f , "CONOUT$" , "w" , stderr);
     #endif
 
-    SDL_Init(SDL_INIT_EVERYTHING);
+    if(SDL_Init(SDL_INIT_EVERYTHING) != 0){
+        const char* error = SDL_GetError();
+        std::cerr << "Couldn't initialize SDL: " << error << std::endl;
+        return 1;
+    }
+    IMGUI_CHECKVERSION();
     IMG_Init(~0);
     srand(time(NULL));
     Renderer* renderer = new Renderer();
@@ -33,19 +40,13 @@ int main(int argc, char **argv){
     int fps = 10;
 
     if(argc > 1){
-        try{
-            nBlocks = atoi(argv[1]);
-        } catch(...){
-            
-        }
+        int n = atoi(argv[1]);
+        if(n) nBlocks = n;
     }
 
     if(argc >= 2){
-        try{
-            fps = atoi(argv[2]);
-        } catch(...){
-            
-        }
+        int n = atoi(argv[2]);
+        if(n) fps = n;
     }
 
     //Start
@@ -54,6 +55,7 @@ int main(int argc, char **argv){
     Sorter* sorter = new Sorter(fps);
     sorter->SelectionSortSetup();
     sorter->running = true;
+    renderer->gui->mainWindow->Show();
     //Game loop
     while(renderer->running){
         //*Sorting
