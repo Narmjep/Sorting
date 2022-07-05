@@ -32,19 +32,6 @@ add_executable(Sorting
     ImguiWrapper.cpp
 )
 
-add_executable(Example
-    example.cpp
-    ${IMGUI_DIR}/imgui.cpp
-    ${IMGUI_DIR}/imgui_demo.cpp
-    ${IMGUI_DIR}/imgui_draw.cpp
-    ${IMGUI_DIR}/imgui_impl_sdl.cpp
-    ${IMGUI_DIR}/imgui_tables.cpp
-    ${IMGUI_DIR}/imgui_widgets.cpp
-    ${IMGUI_DIR}/imgui_impl_sdlrenderer.cpp
-    ImguiWrapper.cpp
-)
-
-
 message(${SDL2_DIR})
 
 target_link_libraries(Sorting
@@ -54,12 +41,6 @@ target_link_libraries(Sorting
     ${CMAKE_CURRENT_BINARY_DIR}/SDL2_image.dll
     ${CMAKE_CURRENT_BINARY_DIR}/zlib1.dll
     #${OPENGL_LIBRARIES}
-)
-
-target_link_libraries(Example
-    SDL2::SDL2
-    SDL2::SDL2main
-    ${SDL2_LIBRARIES}
 )
 
 
