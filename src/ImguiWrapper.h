@@ -8,8 +8,10 @@
 #include "imgui_impl_sdl.h"
 #include "imgui_impl_sdlrenderer.h"
 #include "Sorter.h"
+#include "Block.h"
 
 class Sorter;
+class BlocksManager;
 
 class imguiWrapper
 {
@@ -32,7 +34,7 @@ public:
 /* ---------- Declare you windows here ---------- */
 /* ---------------------------------------------- */
 	//Methods
-	imguiWrapper(Sorter* sorter);
+	imguiWrapper();
 	~imguiWrapper();
 	/**
 	 * @brief Initializes Imgui. Call after creating the renderer.
@@ -71,6 +73,9 @@ public:
 	 */
 	void DestroyWindows();
 
+	//Window Init Fucntions
+	static void MainWindowInit(Sorter* sorter , BlocksManager* blocksManager);
+
 private:
 	ImGuiIO* io;
 	ImVec4 clear_color;
@@ -81,8 +86,7 @@ private:
 	/*                              Window Functions	 							      */
 	/* Declare your IMGUI windows here starting with ImGui::Begin and ending with ImGui::End */
 	/* ---------------------------------------------------------------------------------- */
-	Sorter* sorter;
-	static void MainWindowFunction(imguiWindow* mainWindow , Sorter* sorter);
+	static void MainWindowFunction(imguiWindow* mainWindow);
 };
 
 

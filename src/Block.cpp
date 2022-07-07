@@ -28,9 +28,10 @@ BlocksManager::BlocksManager(int n_blocks , int minHeight , int maxHeight){
     TotalBlocks = n_blocks;
     this->minHeight = minHeight;
     this->maxHeight = maxHeight;
-    for (int i = 0; i < TotalBlocks; i++){
-        CreateBlock();
-    }
+}
+
+void BlocksManager::Init(){
+    CreateSet();
     //Init Texture
     surface = IMG_Load(blockImgPath);
     if(!surface){std::cout << "IMG_Load failed: " << IMG_GetError() << std::endl;}
@@ -46,6 +47,19 @@ void BlocksManager::CreateBlock(){
     block->rect.w = Renderer::windowWidth / TotalBlocks;
     block->rect.y = Renderer::windowHeight - block->rect.h + heightOffset;
     block->rect.x = block->index*block->rect.w;
+}
+
+void BlocksManager::CreateSet(){
+    for(int i = 0 ; i < TotalBlocks ; i++){
+        CreateBlock();
+    }
+}
+
+void BlocksManager::DeleteCurrentSet(){
+    for(int i = 0 ; i < blocks.size() ; i++){
+       delete blocks[i];
+    }
+    blocks.clear();
 }
 
 void BlocksManager::DrawBlocks(){

@@ -8,9 +8,8 @@ imguiWrapper::imguiWindow::imguiWindow(ImGuiWindowFlags flags){
     this->flags = flags;
 }
 
-imguiWrapper::imguiWrapper(Sorter* sorter){
+imguiWrapper::imguiWrapper(){
     clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-    this->sorter = sorter;
 }
 
 imguiWrapper::~imguiWrapper(){
@@ -102,24 +101,70 @@ void imguiWrapper::DrawWindows(){
     ImGui::SetNextWindowPos(use_work_area ? viewport->WorkPos : viewport->Pos);
     ImGui::SetNextWindowSize(use_work_area ? viewport->WorkSize : viewport->Size);
     //*Window Function
-    MainWindowFunction(mainWindow , sorter);
+    MainWindowFunction(mainWindow);
     ImGui::PopStyleColor();
 }
 
 /* -------------------------------------------------------------------------- */
-/*                               Window Function   
+/*                               Window Function                              */
 /*                    Define you window functions here                        */
 /* -------------------------------------------------------------------------- */
+static std::string Txt_startBtn = "Start";
+static bool lockNTiles = false;
+static bool mainWindowInit = false;
+static bool toggle_unlimitedFPS = false;
+static Sorter* sorter_mainWindow;
+static BlocksManager* blocksManager_mainWindow;
 
-void imguiWrapper::MainWindowFunction(imguiWindow* mainWindow , Sorter* sorter){
-    ImGui::Begin(" " , &(mainWindow->shown) , mainWindow->flags);
-    ImGui::Text("Hello world!");
-    ImGui::DragInt("FPS" , &(sorter->fps) , 1.0F  , 1 , 300); 
-    if(ImGui::Button("START")){
-        std::cout << "pressed";
-        sorter->running = !sorter->running;
+
+
+void imguiWrapper::MainWindowFunction(imguiWindow* mainWindow){
+    //Check if initialized
+    if(!mainWindowInit){
+        std::cerr << "Window has not been initialized" << std::endl;
+        return;
     }
-    ImGui::End();
+    ImGui::Begin(" " , &(mainWindow->shown) , mainWindow->flags);
+    ImGui::SameLine();
+    //FPS
+    ImGui::Checkbox("Unlimited FPS" , &toggle_unlimitedFPS);
+    if(!toggle_unlimitedFPS){
+        ImGui::DragInt("FPS" , &(sorter_mainWindow->fps) , 0.2F  , 1 , 300);
+    } else {
+        //Unlimited FPS
+        sorter_mainWindow->fps = 0;
+    }
+    //N Tiles
+    if(!lockNTiles) ImGui::DragInt("Number of Tiles" , &BlocksManager::TotalBlocks , 0.3F  , 2 , 999);
+    //Reset
+    if(ImGui::Button("Refresh")){
+        lockNTiles = false;
+        //Create new tiles
+        sorter_mainWindow->Restart();
+        blocksManager_mainWindow->DeleteCurrentSet();
+        blocksManager_mainWindow->CreateSet();
+        sorter_mainWindow->SelectionSortSetup();
+    }
+    //Start Btn
+    if(ImGui::Button(Txt_startBtn.c_str())){
+        sorter_mainWindow->running = !sorter_mainWindow->running;
+        if(sorter_mainWindow->running){
+            lockNTiles = true;
+        } 
+    }
+    if(sorter_mainWindow->running){
+        Txt_startBtn = "Stop";
+    } else {
+        Txt_startBtn = "Start";
+    }
+    ///////
 
+    ImGui::End();
+}
+
+void imguiWrapper::MainWindowInit(Sorter* sorter , BlocksManager* blocksManager){
+    sorter_mainWindow = sorter;
+    blocksManager_mainWindow = blocksManager;
+    mainWindowInit = true;
 }
 

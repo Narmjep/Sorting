@@ -22,7 +22,6 @@ public:
 
 	void Draw();
 	void UpdatePosition();
-
 	
 };
 
@@ -38,12 +37,15 @@ public:
 	static SDL_Texture* blockTexture;
 	static std::vector<Block*> blocks;
 
-	void CreateBlock();;
+	void Init();
+	void CreateSet();
+	static void DeleteCurrentSet();
 	static void DrawBlocks();
 
 private:
 	SDL_Surface* surface;
 	const char* blockImgPath = "block.png";
+	void CreateBlock();
 };
 
 #endif // BLOCK_H

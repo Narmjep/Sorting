@@ -11,15 +11,20 @@ SDL_Renderer* Renderer::renderer;
 int Renderer::windowWidth = 1280;
 int Renderer::windowHeight = 720;
 
-Renderer::Renderer(Sorter* sorter)
+Renderer::Renderer()
 {
-    gui = new imguiWrapper(sorter);
+    gui = new imguiWrapper();
 }
 
 Renderer::~Renderer(){
     Destroy();
 }
 
+/**
+ * @brief Initializes the renderer.
+ * 
+ * @param isSorterRunning bool* pointing to the running variable of the sorter. 
+ */
 void Renderer::Init(bool* isSorterRunning){
     this->isSorterRunning = isSorterRunning;
     //Create widnow
@@ -32,11 +37,19 @@ void Renderer::Init(bool* isSorterRunning){
     gui->Init(window , renderer);
 }
 
+/**
+ * @brief Handles events and rendering of a frame. Put inside a loop.
+ * 
+ */
 void Renderer::Update(){
     HandleEvents();
     Render();
 }
 
+/**
+ * @brief Destroys the gui and frees SDL objects
+ * 
+ */
 void Renderer::Destroy(){
     delete gui;
     SDL_DestroyRenderer(Renderer::renderer);

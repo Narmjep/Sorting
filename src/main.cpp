@@ -29,7 +29,7 @@ int main(int argc, char **argv){
     int nBlocks = 10;
     int fps = 10;
 
-    if(argc > 1){
+    /* if(argc > 1){
         int n = atoi(argv[1]);
         if(n) nBlocks = n;
     }
@@ -37,8 +37,9 @@ int main(int argc, char **argv){
     if(argc >= 2){
         int n = atoi(argv[2]);
         if(n) fps = n;
-    }
+    } */
 
+    //Init Libraries
 
     if(SDL_Init(SDL_INIT_EVERYTHING) != 0){
         const char* error = SDL_GetError();
@@ -48,14 +49,17 @@ int main(int argc, char **argv){
     IMGUI_CHECKVERSION();
     IMG_Init(~0);
     srand(time(NULL));
-    Sorter* sorter = new Sorter(fps);
-    Renderer* renderer = new Renderer(sorter);
 
-    //Start
-    renderer->Init(&(sorter->running));
+    //Create objects
+    Sorter* sorter = new Sorter(fps);
+    Renderer* renderer = new Renderer();
     BlocksManager* blocksManager = new BlocksManager(nBlocks, 50 , Renderer::windowHeight - 50);
+
+    //Init objects
+    renderer->Init(&(sorter->running));
+    blocksManager->Init();
     sorter->SelectionSortSetup();
-    //sorter->running = true;
+    renderer->gui->MainWindowInit(sorter , blocksManager);
     renderer->gui->mainWindow->Show();
     //Game loop
     while(renderer->running){
@@ -69,6 +73,7 @@ int main(int argc, char **argv){
     //Cleaning
     delete renderer;
     delete blocksManager;
+    delete sorter;
     SDL_Quit();
 
 

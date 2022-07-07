@@ -3,7 +3,6 @@
 
 #include <SDL.h>
 #include "ImguiWrapper.h"
-#include "Sorter.h"
 
 class imguiWrapper;
 class Sorter;
@@ -19,7 +18,7 @@ public:
 	bool* isSorterRunning;
 	imguiWrapper* gui;
 
-	Renderer(Sorter* sorter);
+	Renderer();
 	~Renderer();
 	//Main Methodes 
 	void Init(bool* isSorterRunning);

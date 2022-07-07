@@ -15,7 +15,11 @@ public:
 	//general
 	int fps = 0;
 	bool running;
+	bool sorted;
 	
+	void Restart();
+	void Pause();
+
 	//Selection sort
 	void SelectionSortSetup();
 	void SelectionSortRunFrame();
