@@ -11,16 +11,17 @@ SDL_Renderer* Renderer::renderer;
 int Renderer::windowWidth = 1280;
 int Renderer::windowHeight = 720;
 
-Renderer::Renderer()
+Renderer::Renderer(Sorter* sorter)
 {
-    gui = new imguiWrapper();
+    gui = new imguiWrapper(sorter);
 }
 
 Renderer::~Renderer(){
     Destroy();
 }
 
-void Renderer::Init(){
+void Renderer::Init(bool* isSorterRunning){
+    this->isSorterRunning = isSorterRunning;
     //Create widnow
     SDL_WindowFlags window_flags = (SDL_WindowFlags)(SDL_WINDOW_ALLOW_HIGHDPI);
     window = SDL_CreateWindow("My Window",SDL_WINDOWPOS_CENTERED , SDL_WINDOWPOS_CENTERED , windowWidth , windowHeight , window_flags);
@@ -44,6 +45,7 @@ void Renderer::Destroy(){
 
 void Renderer::Render(){
     gui->StartFrame();
+    gui->DrawWindows();
     gui->RenderFrame();
     SDL_RenderClear(Renderer::renderer);
     BlocksManager::DrawBlocks();

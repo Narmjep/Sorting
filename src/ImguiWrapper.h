@@ -7,7 +7,9 @@
 #include "imgui.h"
 #include "imgui_impl_sdl.h"
 #include "imgui_impl_sdlrenderer.h"
+#include "Sorter.h"
 
+class Sorter;
 
 class imguiWrapper
 {
@@ -19,20 +21,18 @@ public:
 	};
 	class imguiWindow{
 	public:
-		imguiWindow(std::function<void(void)> windowFunction);
-		std::function<void(void)> windowFunction;
-		void RenderWindow();
+		imguiWindow(ImGuiWindowFlags flags);
 		void Show();
 		void Hide();
-	private:
 		bool shown;
+		ImGuiWindowFlags flags;
 	};
+	imguiWindow* mainWindow;
 /* ---------------------------------------------- */
 /* ---------- Declare you windows here ---------- */
 /* ---------------------------------------------- */
-	imguiWindow* mainWindow;
 	//Methods
-	imguiWrapper();
+	imguiWrapper(Sorter* sorter);
 	~imguiWrapper();
 	/**
 	 * @brief Initializes Imgui. Call after creating the renderer.
@@ -53,6 +53,8 @@ public:
 	 * 
 	 */
 	void StartFrame();
+
+	void DrawWindows();
 	/**
 	 * @brief Calls ImGui::Render(). Call before SDL_RenderClear();
 	 * 
@@ -74,13 +76,13 @@ private:
 	ImVec4 clear_color;
 	void SetStyle(ImGuiStyle style);
 	void CreateWindows();
-	void DrawWindows();
 	void Clean();
 	/* ---------------------------------------------------------------------------------- */
 	/*                              Window Functions	 							      */
-	/* Write you IMGUI windows here starting with ImGui::Begin and ending with ImGui::End */
+	/* Declare your IMGUI windows here starting with ImGui::Begin and ending with ImGui::End */
 	/* ---------------------------------------------------------------------------------- */
-	void MainWindowFunction();
+	Sorter* sorter;
+	static void MainWindowFunction(imguiWindow* mainWindow , Sorter* sorter);
 };
 
 

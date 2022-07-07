@@ -4,6 +4,8 @@
 #include <vector>
 #include "Block.h"
 
+class Block;
+
 class Sorter
 {
 public:
@@ -12,7 +14,6 @@ public:
 
 	//general
 	int fps = 0;
-	bool sorted = false;
 	bool running;
 	
 	//Selection sort

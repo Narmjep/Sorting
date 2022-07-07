@@ -23,8 +23,11 @@ void Block::UpdatePosition(){
 
 /////////////////////////////////////////////////////////
 
-BlocksManager::BlocksManager(int n_blocks){
+BlocksManager::BlocksManager(int n_blocks , int minHeight , int maxHeight){
+    //Settings
     TotalBlocks = n_blocks;
+    this->minHeight = minHeight;
+    this->maxHeight = maxHeight;
     for (int i = 0; i < TotalBlocks; i++){
         CreateBlock();
     }

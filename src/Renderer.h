@@ -3,6 +3,10 @@
 
 #include <SDL.h>
 #include "ImguiWrapper.h"
+#include "Sorter.h"
+
+class imguiWrapper;
+class Sorter;
 
 class Renderer
 {
@@ -12,12 +16,13 @@ public:
 	static SDL_Renderer* renderer;
 	static int windowWidth, windowHeight;
 	bool running;
+	bool* isSorterRunning;
 	imguiWrapper* gui;
 
-	Renderer();
+	Renderer(Sorter* sorter);
 	~Renderer();
 	//Main Methodes 
-	void Init();
+	void Init(bool* isSorterRunning);
 	void Update();
 	void Destroy();
 

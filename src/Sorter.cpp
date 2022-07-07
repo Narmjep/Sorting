@@ -5,6 +5,7 @@
 Sorter::Sorter(int fps)
 {
     this->fps = fps;
+    running = false;
 }
 
 void Sorter::SelectionSortSetup(){
@@ -33,7 +34,7 @@ void Sorter::SelectionSortRunFrame(){
     it_toSort++;
     it_smallest = it_toSort;
     if(it_toSort == BlocksManager::blocks.end()) running = false;
-    //
+    //FPS
     Uint64 FrameEnd = SDL_GetTicks64();
     float delay = FrameEnd - FrameBegin;
     SDL_Delay(floor(1000.0f/fps) - delay);

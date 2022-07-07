@@ -25,16 +25,6 @@ int main(int argc, char **argv){
     freopen_s(&f , "CONOUT$" , "w" , stderr);
     #endif
 
-    if(SDL_Init(SDL_INIT_EVERYTHING) != 0){
-        const char* error = SDL_GetError();
-        std::cerr << "Couldn't initialize SDL: " << error << std::endl;
-        return 1;
-    }
-    IMGUI_CHECKVERSION();
-    IMG_Init(~0);
-    srand(time(NULL));
-    Renderer* renderer = new Renderer();
-
     //Handle arguments
     int nBlocks = 10;
     int fps = 10;
@@ -49,12 +39,23 @@ int main(int argc, char **argv){
         if(n) fps = n;
     }
 
-    //Start
-    renderer->Init();
-    BlocksManager* blocksManager = new BlocksManager(nBlocks);
+
+    if(SDL_Init(SDL_INIT_EVERYTHING) != 0){
+        const char* error = SDL_GetError();
+        std::cerr << "Couldn't initialize SDL: " << error << std::endl;
+        return 1;
+    }
+    IMGUI_CHECKVERSION();
+    IMG_Init(~0);
+    srand(time(NULL));
     Sorter* sorter = new Sorter(fps);
+    Renderer* renderer = new Renderer(sorter);
+
+    //Start
+    renderer->Init(&(sorter->running));
+    BlocksManager* blocksManager = new BlocksManager(nBlocks, 50 , Renderer::windowHeight - 50);
     sorter->SelectionSortSetup();
-    sorter->running = true;
+    //sorter->running = true;
     renderer->gui->mainWindow->Show();
     //Game loop
     while(renderer->running){

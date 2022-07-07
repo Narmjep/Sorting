@@ -8,6 +8,8 @@
 
 #include "Renderer.h"
 
+class Renderer;
+
 class Block
 {
 public:
@@ -27,10 +29,10 @@ public:
 class BlocksManager
 {
 public:
-	BlocksManager(int n_blocks);
+	BlocksManager(int n_blocks , int minHeight , int maxHeight);
 	~BlocksManager()=default;
-	int minHeight = 100;
-	int maxHeight = Renderer::windowHeight - 100;
+	int minHeight;
+	int maxHeight;
 	int heightOffset = 20;
 	static int TotalBlocks;
 	static SDL_Texture* blockTexture;
