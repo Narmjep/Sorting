@@ -100,7 +100,7 @@ void imguiWrapper::DrawWindows(){
     const ImGuiViewport* viewport = ImGui::GetMainViewport();
     ImGui::SetNextWindowPos(use_work_area ? viewport->WorkPos : viewport->Pos);
     ImGui::SetNextWindowSize(use_work_area ? viewport->WorkSize : viewport->Size);
-    //*Window Function
+    //*Window Functions
     MainWindowFunction(mainWindow);
     ImGui::PopStyleColor();
 }
@@ -109,21 +109,29 @@ void imguiWrapper::DrawWindows(){
 /*                               Window Function                              */
 /*                    Define you window functions here                        */
 /* -------------------------------------------------------------------------- */
-static std::string Txt_startBtn = "Start";
-static bool lockNTiles = false;
+
 static bool mainWindowInit = false;
-static bool toggle_unlimitedFPS = false;
 static Sorter* sorter_mainWindow;
 static BlocksManager* blocksManager_mainWindow;
-static const char* algorithNames[] = {
-    "Selection Sort",
-    "Bubble Sort",
-};
-static int current_algorithm = 0;
 
+void imguiWrapper::MainWindowFunction(imguiWrapper::imguiWindow* mainWindow){
 
+    //Variables
+    static std::string Txt_startBtn = "Start";
+    static bool lockSettings = false;
+    static bool toggle_unlimitedFPS = false;
+    static bool BtnClrPushed;
+    //Lambda
+    auto SetBtnColor = [](ImVec4 color){
+        ImGui::PushStyleColor(ImGuiCol_Button , {0 , 1 , 0 , 1});
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0 , 0.6f , 0 , 1));
+        BtnClrPushed = true;
+    };
+    auto ResetBtnColor = []{
+        ImGui::PopStyleColor(2);
+        BtnClrPushed = false;
+    };
 
-void imguiWrapper::MainWindowFunction(imguiWindow* mainWindow){
     //Check if initialized
     if(!mainWindowInit){
         std::cerr << "Window has not been initialized" << std::endl;
@@ -140,29 +148,61 @@ void imguiWrapper::MainWindowFunction(imguiWindow* mainWindow){
         sorter_mainWindow->fps = 0;
     }
     //N Tiles
-    if(!lockNTiles) ImGui::DragInt("Number of Tiles" , &BlocksManager::TotalBlocks , 0.3F  , 2 , 999);
+    if(!lockSettings) ImGui::DragInt("Number of Tiles" , &BlocksManager::TotalBlocks , 0.3F  , 2 , 999);
     //Reset
     if(ImGui::Button("Refresh")){
-        lockNTiles = false;
+        lockSettings = false;
         //Create new tiles
         sorter_mainWindow->Restart();
         blocksManager_mainWindow->DeleteCurrentSet();
         blocksManager_mainWindow->CreateSet();
         sorter_mainWindow->Setup();
     }
-    //Change Algortihm Btn
-    if(ImGui::Button(algorithNames[sorter_mainWindow->algorithm])){
+
+    //*Algorithms
+        //Selection Sort
+            //Button Color
+    if(sorter_mainWindow->algorithm == Sorter::SelectionSort){
+        SetBtnColor({0,1,0,1});
+    }
+    bool btnPressed = false;
+    if(!lockSettings)btnPressed = ImGui::Button("Selection sort");
+    if(btnPressed){
         //Change the algorithm
-        current_algorithm = (current_algorithm + 1) % Sorter::nAlgorithms;
-        sorter_mainWindow->algorithm = (Sorter::Algorithm)current_algorithm;
+        sorter_mainWindow->algorithm = Sorter::SelectionSort;
             //Setup new algorithm
         sorter_mainWindow->Setup();
+
+        btnPressed = false;
+    }
+            //Reset Btn Color
+    if(BtnClrPushed){
+        ResetBtnColor();
+    }
+    if(!lockSettings)ImGui::SameLine();
+        //Bubble sort
+            //Btn Color
+    if(sorter_mainWindow->algorithm == Sorter::BubbleSort){
+        SetBtnColor(ImVec4(0,0.6,0,1));
+    }
+    if(!lockSettings) btnPressed = ImGui::Button("Bubble sort");
+    if(btnPressed){
+        //Change the algorithm
+        sorter_mainWindow->algorithm = Sorter::BubbleSort;
+            //Setup new algorithm
+        sorter_mainWindow->Setup();
+
+        btnPressed = false;
+    }
+            //Reset Btn Color
+    if(BtnClrPushed){
+        ResetBtnColor();
     }
     //Start Btn
     if(ImGui::Button(Txt_startBtn.c_str())){
         sorter_mainWindow->running = !sorter_mainWindow->running;
         if(sorter_mainWindow->running){
-            lockNTiles = true;
+            lockSettings = true;
         } 
     }
     if(sorter_mainWindow->running){
@@ -178,14 +218,6 @@ void imguiWrapper::MainWindowFunction(imguiWindow* mainWindow){
 void imguiWrapper::MainWindowInit(Sorter* sorter , BlocksManager* blocksManager){
     sorter_mainWindow = sorter;
     blocksManager_mainWindow = blocksManager;
-    try{
-        if(std::size(algorithNames) != Sorter::nAlgorithms){
-            throw(Sorter::Number_Of_Algorithms_Exception());
-        }
-    } catch (Sorter::Number_Of_Algorithms_Exception exception){
-        std::cout << exception.what();
-        std::terminate();
-    }
     mainWindowInit = true;
 }
 

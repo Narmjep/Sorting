@@ -17,14 +17,6 @@ public:
 		SelectionSort,
 		BubbleSort,
 	};
-	//Number of available algorithms Make sure this is set correctly!
-	static const int nAlgorithms = 2;
-	class Number_Of_Algorithms_Exception : public std::exception{
-	public:
-		std::string what(){
-			return "Number of algorithms exception! Make sure you set a name for every algorithm in ImguiWrapper.cpp and that the static const int nAlgorithms in Sorter.h is set correctly.\n";
-		}
-	};
 
 	Algorithm algorithm;
 
