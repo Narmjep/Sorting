@@ -3,6 +3,7 @@
 #include <SDL_image.h>
 #include <time.h>
 #include <filesystem>
+
 #define GET_CONSOLE
 #ifdef GET_CONSOLE
 #include <windows.h>
@@ -58,13 +59,13 @@ int main(int argc, char **argv){
     //Init objects
     renderer->Init(&(sorter->running));
     blocksManager->Init();
-    sorter->SelectionSortSetup();
+    sorter->Setup();
     renderer->gui->MainWindowInit(sorter , blocksManager);
     renderer->gui->mainWindow->Show();
     //Game loop
     while(renderer->running){
         //*Sorting
-        if(sorter->running)sorter->SelectionSortRunFrame();
+        if(sorter->running)sorter->RunSingleFrame();
         //*Rendering
         SDL_SetRenderDrawColor(Renderer::renderer, 0 , 0 , 0 , 255);
         renderer->Update();

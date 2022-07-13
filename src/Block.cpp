@@ -61,10 +61,18 @@ void BlocksManager::DeleteCurrentSet(){
     }
     blocks.clear();
 }
-
+bool drawing = false;
 void BlocksManager::DrawBlocks(){
     SDL_SetRenderDrawColor(Renderer::renderer , 255, 255, 255 , 255);
     for(auto block : blocks){
         block->Draw();
     }
+}
+
+void BlocksManager::GetBlocksArray(){
+    std::cout << "\nBLOCKS:\n";
+    for(auto ptr_block : BlocksManager::blocks){
+        std::cout << ptr_block->height << " ; ";
+    }
+    std::cout << "\n------------------------------------\n";
 }

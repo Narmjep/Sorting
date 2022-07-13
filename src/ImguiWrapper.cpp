@@ -115,6 +115,11 @@ static bool mainWindowInit = false;
 static bool toggle_unlimitedFPS = false;
 static Sorter* sorter_mainWindow;
 static BlocksManager* blocksManager_mainWindow;
+static const char* algorithNames[] = {
+    "Selection Sort",
+    "Bubble Sort",
+};
+static int current_algorithm = 0;
 
 
 
@@ -143,7 +148,15 @@ void imguiWrapper::MainWindowFunction(imguiWindow* mainWindow){
         sorter_mainWindow->Restart();
         blocksManager_mainWindow->DeleteCurrentSet();
         blocksManager_mainWindow->CreateSet();
-        sorter_mainWindow->SelectionSortSetup();
+        sorter_mainWindow->Setup();
+    }
+    //Change Algortihm Btn
+    if(ImGui::Button(algorithNames[sorter_mainWindow->algorithm])){
+        //Change the algorithm
+        current_algorithm = (current_algorithm + 1) % Sorter::nAlgorithms;
+        sorter_mainWindow->algorithm = (Sorter::Algorithm)current_algorithm;
+            //Setup new algorithm
+        sorter_mainWindow->Setup();
     }
     //Start Btn
     if(ImGui::Button(Txt_startBtn.c_str())){
@@ -165,6 +178,14 @@ void imguiWrapper::MainWindowFunction(imguiWindow* mainWindow){
 void imguiWrapper::MainWindowInit(Sorter* sorter , BlocksManager* blocksManager){
     sorter_mainWindow = sorter;
     blocksManager_mainWindow = blocksManager;
+    try{
+        if(std::size(algorithNames) != Sorter::nAlgorithms){
+            throw(Sorter::Number_Of_Algorithms_Exception());
+        }
+    } catch (Sorter::Number_Of_Algorithms_Exception exception){
+        std::cout << exception.what();
+        std::terminate();
+    }
     mainWindowInit = true;
 }
 

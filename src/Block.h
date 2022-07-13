@@ -42,6 +42,10 @@ public:
 	static void DeleteCurrentSet();
 	static void DrawBlocks();
 
+	//Debug
+	static void GetBlocksArray();
+
+
 private:
 	SDL_Surface* surface;
 	const char* blockImgPath = "block.png";
