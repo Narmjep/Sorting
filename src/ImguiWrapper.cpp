@@ -131,6 +131,14 @@ void imguiWrapper::MainWindowFunction(imguiWrapper::imguiWindow* mainWindow){
         ImGui::PopStyleColor(2);
         BtnClrPushed = false;
     };
+    auto Refresh = []{
+        lockSettings = false;
+        //Create new tiles
+        sorter_mainWindow->Restart();
+        blocksManager_mainWindow->DeleteCurrentSet();
+        blocksManager_mainWindow->CreateSet();
+        sorter_mainWindow->Setup();
+    };
 
     //Check if initialized
     if(!mainWindowInit){
@@ -148,15 +156,14 @@ void imguiWrapper::MainWindowFunction(imguiWrapper::imguiWindow* mainWindow){
         sorter_mainWindow->fps = 0;
     }
     //N Tiles
-    if(!lockSettings) ImGui::DragInt("Number of Tiles" , &BlocksManager::TotalBlocks , 0.3F  , 2 , 999);
+    if(!lockSettings){
+        if(ImGui::DragInt("Number of Tiles" , &BlocksManager::TotalBlocks , 0.3F  , 2 , 999)){
+            Refresh();
+        }
+    }
     //Reset
     if(ImGui::Button("Refresh")){
-        lockSettings = false;
-        //Create new tiles
-        sorter_mainWindow->Restart();
-        blocksManager_mainWindow->DeleteCurrentSet();
-        blocksManager_mainWindow->CreateSet();
-        sorter_mainWindow->Setup();
+        Refresh();
     }
 
     //*Algorithms
@@ -220,4 +227,5 @@ void imguiWrapper::MainWindowInit(Sorter* sorter , BlocksManager* blocksManager)
     blocksManager_mainWindow = blocksManager;
     mainWindowInit = true;
 }
+
 
