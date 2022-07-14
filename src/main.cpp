@@ -4,7 +4,7 @@
 #include <time.h>
 #include <filesystem>
 
-#define GET_CONSOLE
+//#define GET_CONSOLE // Alocates a console for debugging
 #ifdef GET_CONSOLE
 #include <windows.h>
 #endif
@@ -26,22 +26,10 @@ int main(int argc, char **argv){
     freopen_s(&f , "CONOUT$" , "w" , stderr);
     #endif
 
-    //Handle arguments
     int nBlocks = 10;
     int fps = 10;
 
-    /* if(argc > 1){
-        int n = atoi(argv[1]);
-        if(n) nBlocks = n;
-    }
-
-    if(argc >= 2){
-        int n = atoi(argv[2]);
-        if(n) fps = n;
-    } */
-
     //Init Libraries
-
     if(SDL_Init(SDL_INIT_EVERYTHING) != 0){
         const char* error = SDL_GetError();
         std::cerr << "Couldn't initialize SDL: " << error << std::endl;
@@ -62,12 +50,12 @@ int main(int argc, char **argv){
     sorter->Setup();
     renderer->gui->MainWindowInit(sorter , blocksManager);
     renderer->gui->mainWindow->Show();
-    //Game loop
+    //Render loop
     while(renderer->running){
         //*Sorting
         if(sorter->running)sorter->RunSingleFrame();
         //*Rendering
-        SDL_SetRenderDrawColor(Renderer::renderer, 0 , 0 , 0 , 255);
+        SDL_SetRenderDrawColor(Renderer::renderer, 0 , 0 , 0 , 255); // Draw black background
         renderer->Update();
     }
 
@@ -76,7 +64,6 @@ int main(int argc, char **argv){
     delete blocksManager;
     delete sorter;
     SDL_Quit();
-
 
     return 0;
 }

@@ -34,7 +34,7 @@ void BlocksManager::Init(){
     CreateSet();
     //Init Texture
     surface = IMG_Load(blockImgPath);
-    if(!surface){std::cout << "IMG_Load failed: " << IMG_GetError() << std::endl;}
+    if(!surface){std::cerr << "IMG_Load failed: " << IMG_GetError() << std::endl;}
     blockTexture = SDL_CreateTextureFromSurface(Renderer::renderer, surface);
     SDL_FreeSurface(surface);
 }
@@ -62,6 +62,7 @@ void BlocksManager::DeleteCurrentSet(){
     blocks.clear();
 }
 bool drawing = false;
+
 void BlocksManager::DrawBlocks(){
     SDL_SetRenderDrawColor(Renderer::renderer , 255, 255, 255 , 255);
     for(auto block : blocks){

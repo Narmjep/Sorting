@@ -95,14 +95,14 @@ void imguiWrapper::SetStyle(ImGuiStyle style){
 void imguiWrapper::DrawWindows(){
     //*ImGUi Setup
     //Background
-    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f)); // Makes the background of Imgui transparent
     bool use_work_area = true;
     const ImGuiViewport* viewport = ImGui::GetMainViewport();
     ImGui::SetNextWindowPos(use_work_area ? viewport->WorkPos : viewport->Pos);
     ImGui::SetNextWindowSize(use_work_area ? viewport->WorkSize : viewport->Size);
     //*Window Functions
     MainWindowFunction(mainWindow);
-    ImGui::PopStyleColor();
+    ImGui::PopStyleColor(); // Pop ImGuiCol_WindwowBg
 }
 
 /* -------------------------------------------------------------------------- */

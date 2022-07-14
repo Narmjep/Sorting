@@ -29,11 +29,12 @@ public:
 		bool shown;
 		ImGuiWindowFlags flags;
 	};
+	/* ---------------------------------------------- */
+	/* ---------- Declare you windows here ---------- */
+	/* ---------------------------------------------- */
 	imguiWindow* mainWindow;
-/* ---------------------------------------------- */
-/* ---------- Declare you windows here ---------- */
-/* ---------------------------------------------- */
-	//Methods
+
+	//*Methods
 	imguiWrapper();
 	~imguiWrapper();
 	/**
@@ -55,7 +56,10 @@ public:
 	 * 
 	 */
 	void StartFrame();
-
+	/**
+	 * @brief Draws the imguiWindows. Call after creating a new frame and before rendering that frame. 
+	 * 
+	 */
 	void DrawWindows();
 	/**
 	 * @brief Calls ImGui::Render(). Call before SDL_RenderClear();
@@ -79,13 +83,28 @@ public:
 private:
 	ImGuiIO* io;
 	ImVec4 clear_color;
+	/**
+	 * @brief Set the ImGui Style.
+	 * 
+	 * @param style ImguiWrapper::ImGuiStyle you want to use. 
+	 */
 	void SetStyle(ImGuiStyle style);
+	/**
+	 * @brief Create the imguiWindow objects
+	 * 
+	 */
 	void CreateWindows();
 	void Clean();
 	/* ---------------------------------------------------------------------------------- */
 	/*                              Window Functions	 							      */
 	/* Declare your IMGUI windows here starting with ImGui::Begin and ending with ImGui::End */
 	/* ---------------------------------------------------------------------------------- */
+	
+	/**
+	 * @brief The window function defining your window and its UI elemtns. Starts with ImGui::Begin and ends with ImGui::End()
+	 * 
+	 * @param mainWindow ImguiWrapper::imguiWindow object corresponding to the window.
+	 */
 	static void MainWindowFunction(imguiWindow* mainWindow);
 };
 

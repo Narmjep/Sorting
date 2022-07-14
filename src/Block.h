@@ -19,8 +19,15 @@ public:
 
 	Block(int index , int height);
 	~Block() = default;
-
+	/**
+	 * @brief Copies the block to the renderer.
+	 * 
+	 */
 	void Draw();
+	/**
+	 * @brief Sets the block's position relative to its index in the set.
+	 * 
+	 */
 	void UpdatePosition();
 	
 };
@@ -38,11 +45,27 @@ public:
 	static std::vector<Block*> blocks;
 
 	void Init();
+	/**
+	 * @brief Creates a set of Tiles.
+	 * 
+	 */
 	void CreateSet();
+	/**
+	 * @brief Frees the current set.
+	 * 
+	 */
 	static void DeleteCurrentSet();
+	/**
+	 * @brief Calls the Draw() method for every block in the current set.
+	 * 
+	 */
 	static void DrawBlocks();
 
 	//Debug
+	/**
+	 * @brief Prints the current set. Used for debugging only.
+	 * 
+ 	*/
 	static void GetBlocksArray();
 
 

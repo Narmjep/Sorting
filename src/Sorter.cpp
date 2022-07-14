@@ -94,7 +94,6 @@ void Sorter::BubbleSortRunFrame(){
     Uint64 FrameBegin = SDL_GetTicks64();
 
     static bool swapped_elements;
-    static int n=0;
     //Compare two elements
     std::vector<Block*>::iterator it_next = std::next(it_toSort);
     if((*it_toSort)->height > (*it_next)->height ){
@@ -108,16 +107,13 @@ void Sorter::BubbleSortRunFrame(){
     }
     //Increment
     it_toSort++;
-    n++;
     //Check if end
     if(it_toSort == std::prev(BlocksManager::blocks.end())){
         //End of array
         it_toSort = BlocksManager::blocks.begin();
-        n = 0;
         //Check if any elements had to be swapped
         if(!swapped_elements){
             //Sorted!
-            std::cout << "Done!\n";
             sorted = true;
             running = false;
             return;
