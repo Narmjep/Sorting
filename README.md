@@ -1,2 +1,7 @@
 # Sorting
- Selection sorting demo using SDL2
+
+A simple visual application that demonstrates different sorting algorithms.
+
+Supported algorithms:
+ Selection sort
+ Bubble sort
